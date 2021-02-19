@@ -17,9 +17,14 @@ class _GetInstallState extends State<GetInstall> {
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(!downloading
-            ? 'Would you like to install ${widget.label} ?'
-            : 'Downloading...!'
+          Container(
+            width: 300,
+            child: Text(!downloading
+              ? 'Would you like to install\n${widget.label} ?'
+              : 'Downloading...!',
+              style: TextStyle(fontSize: 16),
+              textAlign: TextAlign.center,
+            ),
           ),
           if(downloading) CircularProgressIndicator()
         ],

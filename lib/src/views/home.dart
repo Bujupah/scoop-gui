@@ -61,15 +61,19 @@ class _HomePageState extends State<HomePage> {
                 return;
               },
               stretchTriggerOffset: 50,
-              title: Text('Scoop Applications', style: TextStyle(color: Colors.grey[900], fontWeight: FontWeight.bold)),
+              leading: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Image.asset('images/logo.png'),
+              ),
+              title: Text('Scoop.sh', style: TextStyle(color: Colors.grey[900], fontWeight: FontWeight.bold)),
               bottom: AppBar(
                 primary: true,
-                title: TextFormField(
+                title: TextField(
                   onChanged: (value) => setState(() {
                     _filter = value;
                     _filtered = applications.where((element) => element.name.contains(_filter) || _filter == '').toList();
                   }),
-                  onFieldSubmitted: (_) async {
+                  onSubmitted: (_) async {
                     loader();
                   },
                   decoration: InputDecoration(
@@ -88,28 +92,31 @@ class _HomePageState extends State<HomePage> {
                   StretchMode.blurBackground,
                   StretchMode.fadeTitle,
                 ],
-                title: Text('Title', style: TextStyle(color: Colors.white, fontSize: 16.0)),
-                background: Image.network(url, fit: BoxFit.cover)
+                background: Image.network(url, fit: BoxFit.cover),
               ),
             ),
             SliverList(
-              delegate: SliverChildBuilderDelegate((context, index) => Card(
-                child: ListTile(
-                  dense: true,
-                  title: Text('${_filtered[index].name}'),
-                  subtitle: Text('${_filtered[index].version}/${_filtered[index].bucket}'),
-                  trailing: Icon(Icons.cloud_download, color: _filtered[index].installed ? Colors.green[900] : Colors.white),
-                  onTap: _filtered[index].installed ? () {} : () async {
-                    Utils.openDialog(GetInstall(
-                      label: _filtered[index].name,
-                      onTap: () async {
-                        await Scoop.scoopInstall(_filtered[index].name);
+              delegate: SliverChildBuilderDelegate(
+                (context, index) {
+                  return Card(
+                    child: ListTile(
+                      dense: true,
+                      title: Text('${_filtered[index].name}'),
+                      subtitle: Text('${_filtered[index].version}/${_filtered[index].bucket}'),
+                      trailing: Icon(Icons.cloud_download, color: _filtered[index].installed ? Colors.green[900] : Colors.white),
+                      onTap: _filtered[index].installed ? () {} : () async {
+                        Utils.openDialog(GetInstall(
+                          label: _filtered[index].name,
+                          onTap: () async {
+                            await Scoop.scoopInstall(_filtered[index].name);
+                          },
+                        ), dismissable: true);
                       },
-                    ));
-                  },
-                ),
-              ), 
-              childCount: _filtered.length)
+                    ),
+                  );
+                },
+                childCount: _filtered.length,
+              )
             )
           ],
         ),
