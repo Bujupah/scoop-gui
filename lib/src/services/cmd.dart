@@ -34,7 +34,9 @@ class Scoop {
     final _r = await shell.run('scoop', query.install.split(' '));
     if(!_r.exitCode.isFine) {
       // Todo: show error dialog
+      print(_r.stderr);
     }
+    print(_r.stdout);
     return;
   }
 

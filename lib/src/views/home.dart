@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:windows_app_manager/src/models/Application.dart';
 import 'package:windows_app_manager/src/services/cmd.dart';
@@ -104,7 +103,7 @@ class _HomePageState extends State<HomePage> {
                     Utils.openDialog(GetInstall(
                       label: _filtered[index].name,
                       onTap: () async {
-                        await Scoop.scoopInstall('nano');
+                        await Scoop.scoopInstall(_filtered[index].name);
                       },
                     ));
                   },
