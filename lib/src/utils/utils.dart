@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -7,7 +6,7 @@ class Utils {
     Get.to(() => page, transition: Transition.downToUp);
   }
 
-  static void openDialog(Widget page, {bool dismissable = false}) {
-    Get.dialog(page, barrierDismissible: dismissable, useSafeArea: true);
+  static Future<void> openDialog(Widget page, {bool dismissable = false}) async {
+    return await Get.dialog(page, barrierDismissible: dismissable, );
   }
 }

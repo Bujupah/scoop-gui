@@ -93,12 +93,19 @@ class Scoop {
     } else return [];
   }
 
-  static void scoopTest({Function(String) callback}) async {
-    callback(Platform.localHostname + "\$\n");
-    final res = await shell.start('scoop', ['search', 'dart']);
-    res.stdout.listen((event) {
+  static Future<void> scoopTestInstall(String query, {Function(String) callback}) async {
+    callback(Platform.localHostname);
+    callback("\$ scoop ${query.install}\n");
+
+    final _r = await shell.start('scoop', query.install.split(' '));
+    _r.stdout.listen((event) {
       callback(String.fromCharCodes(event));
     });
+    if(!(await _r.exitCode).isFine) {
+      // Todo: show error dialog
+      print(_r.stderr);
+    }
+    print(_r.stdout);
   }
 }
 

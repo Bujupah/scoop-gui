@@ -6,6 +6,9 @@ import 'package:windows_app_manager/src/utils/utils.dart';
 import 'package:windows_app_manager/src/views/powershell.dart';
 import 'package:windows_app_manager/src/views/settings.dart';
 import 'package:windows_app_manager/src/widgets/install.dart';
+import 'package:get/get.dart';
+import 'package:xterm/flutter.dart';
+import 'package:xterm/terminal/terminal.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -82,7 +85,7 @@ class _HomePageState extends State<HomePage> {
                   )
                 ),
                 actions: [
-                  MaterialButton(child: Icon(Icons.file_download), onPressed: () => Utils.navigateTo(PowerShell())),
+                  MaterialButton(child: Icon(Icons.code_outlined), onPressed: () => Get.bottomSheet(PowerShell())),
                   MaterialButton(child: Icon(Icons.settings), onPressed: () => Utils.navigateTo(SettingPage())),
                 ],
               ),
@@ -105,12 +108,13 @@ class _HomePageState extends State<HomePage> {
                       subtitle: Text('${_filtered[index].version}/${_filtered[index].bucket}'),
                       trailing: Icon(Icons.cloud_download, color: _filtered[index].installed ? Colors.green[900] : Colors.white),
                       onTap: _filtered[index].installed ? () {} : () async {
-                        Utils.openDialog(GetInstall(
+                        await Utils.openDialog(GetInstall(
                           label: _filtered[index].name,
                           onTap: () async {
-                            await Scoop.scoopInstall(_filtered[index].name);
+                            await Get.bottomSheet(PowerShell(name: _filtered[index].name));
                           },
-                        ), dismissable: true);
+                        ), dismissable: true,);
+                        Get.back();
                       },
                     ),
                   );
